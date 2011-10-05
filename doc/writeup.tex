@@ -1,0 +1,47 @@
+%        File: writeup.tex
+%     Created: Wed Oct 05 10:00 AM 2011 P
+% Last Change: Wed Oct 05 10:00 AM 2011 P
+%
+\documentclass[a4paper]{article}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+   backgroundcolor=\color{lbcolor},
+   tabsize=3,
+   rulecolor=,
+   language=Java,
+   basicstyle=\scriptsize,
+   upquote=true,
+   aboveskip={1.5\baselineskip},
+   columns=fixed,
+   showstringspaces=false,
+   extendedchars=true,
+   breaklines=true,
+   % prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+   % frame=single,
+   showtabs=false,
+   showspaces=false,
+   showstringspaces=false,
+   identifierstyle=\ttfamily,
+   keywordstyle=\color[rgb]{0,0,1},
+   commentstyle=\color[rgb]{0.133,0.545,0.133},
+   stringstyle=\color[rgb]{0.627,0.126,0.941},
+} 
+\newcommand{\sourceRoot}{../src/}
+\newcommand{\myPackage}{}
+\newcommand{\myJPackage}{}
+\newcommand{\sourcePackage}[2]{\subsection*{Package: #2}\renewcommand{\myPackage}{#1}\renewcommand{\myJPackage}{#2}}
+\newcommand{\sourceClass}[1]{\lstinputlisting[caption=\myJPackage.#1]{\sourceRoot\myPackage/#1}}
+\begin{document}
+
+\begin{lstlisting}[caption=Class]
+public static class Poop{
+}
+\end{lstlisting}
+
+\end{document}
+
+
