@@ -57,8 +57,15 @@ In this section we will simply discuss the plan for implementing the blocks proj
 \EXIT(true)\ENDPROC
 \end{program}
 \subsection{Generate Possible Moves}
+To generate possible moves, we will need to look at each block individually. For each block we need to look to the left and right for open spots, and compare the number of open spots to the height of the block. If it is greater than or equal to the height, then that is a possible move. (we will only consider moving blocks one position at a time, to simplify the generation process). The process then needs to be repeated for the above and below comparing against the width. 
 
 \subsection{Decide what to do next}
+To decide which of the generated moves to use, we will simply choose the first one in the list that hasn't yet been seen (this mechanism will be discussed in subsection \ref{ssec:checkDup}), and try it. 
+
+\subsection{Make and Unmake moves}
+
+\subsection{Detect Previously Visited configurations}
+\label{ssec:checkDup}
 \sourcePackage{.}{main}
 \sourceClass{Solver.java}
 \sourceClass{Solver.java}
