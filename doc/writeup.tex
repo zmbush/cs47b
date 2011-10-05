@@ -6,6 +6,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{textcomp}
+\usepackage{program}
 \definecolor{listinggray}{gray}{0.9}
 \definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
 \lstset{
@@ -36,11 +37,34 @@
 \newcommand{\sourcePackage}[2]{\subsection*{Package: #2}\renewcommand{\myPackage}{#1}\renewcommand{\myJPackage}{#2}}
 \newcommand{\sourceClass}[1]{\lstinputlisting[caption=\myJPackage.#1]{\sourceRoot\myPackage/#1}}
 \begin{document}
+\title{The Solving of the Simple Single Player Game Involving Sliding Blocks}
+\author{Zachary M. Bush}
+\maketitle
+\tableofcontents
+\lstlistoflistings
+\section{The Plan}
+\subsection{Checking For Goal Configuration}
+In this section we will simply discuss the plan for implementing the blocks project. The basis of this algorithm will be to look through the list of the goal orientation. For each goal position, look through the list of current block positions and check if there is a block that is of the correct size and in that position. 
+\begin{program}
+\PROC |isCorrect|(currentBlocks, goalBlocks) \BODY
+\FOR i := 0 \TO |len|(goalBlocks) \DO
+   found := false \rcomment{Check if the current goal block is found.}
+   \FOR j := 0 \TO |len|(currentBlocks) \DO
+      \IF goalBlocks[i] = currentBlocks[j] \THEN found := true \FI
+   \OD
+   \IF \NOT found \THEN \EXIT(false) \FI \rcomment{A goal block doesn't match. Return False}
+\OD
+\EXIT(true)\ENDPROC
+\end{program}
+\subsection{Generate Possible Moves}
 
-\begin{lstlisting}[caption=Class]
-public static class Poop{
-}
-\end{lstlisting}
+\subsection{Decide what to do next}
+\sourcePackage{.}{main}
+\sourceClass{Solver.java}
+\sourceClass{Solver.java}
+\sourceClass{Solver.java}
+\sourceClass{Solver.java}
+\sourceClass{Solver.java}
 
 \end{document}
 
