@@ -47,24 +47,54 @@
 In this section we will simply discuss the plan for implementing the blocks project. The basis of this algorithm will be to look through the list of the goal orientation. For each goal position, look through the list of current block positions and check if there is a block that is of the correct size and in that position. 
 \begin{program}
 \PROC |isCorrect|(currentBlocks, goalBlocks) \BODY
-\FOR i := 0 \TO |len|(goalBlocks) \DO
-   found := false \rcomment{Check if the current goal block is found.}
-   \FOR j := 0 \TO |len|(currentBlocks) \DO
-      \IF goalBlocks[i] = currentBlocks[j] \THEN found := true \FI
+   \FOR i := 0 \TO |len|(goalBlocks) \DO
+      found := false \rcomment{Check if the current goal block is found.}
+      \FOR j := 0 \TO |len|(currentBlocks) \DO
+         \IF goalBlocks[i] = currentBlocks[j] \THEN found := true \FI
+      \OD
+      \IF \NOT found \THEN \EXIT(false) \FI \rcomment{A goal block doesn't match. Return False}
    \OD
-   \IF \NOT found \THEN \EXIT(false) \FI \rcomment{A goal block doesn't match. Return False}
-\OD
 \EXIT(true)\ENDPROC
 \end{program}
 \subsection{Generate Possible Moves}
 To generate possible moves, we will need to look at each block individually. For each block we need to look to the left and right for open spots, and compare the number of open spots to the height of the block. If it is greater than or equal to the height, then that is a possible move. (we will only consider moving blocks one position at a time, to simplify the generation process). The process then needs to be repeated for the above and below comparing against the width. 
+\begin{program}
+\PROC |possibleMoves|(currentBlocks) \BODY
+   occupiedBlocks := array[width][height]
+   \FOR i := 0 \TO |len|(currentBlocks) \DO
+      \FOR x := 0 \TO currentBlocks[i].width \DO
+         \FOR y := 0 \TO currentBlocks[i].height \DO
+            occupiedBlocks[x+currentBlocks[i].x][y+currentBlocks[i].y] := true
+         \OD
+      \OD
+   \OD
+   \FOR i := 0 \TO |len|(currentBlocks) \DO
+      b := currentBlocks[i]
+      valid := true \rcomment{We will only consider a move valid if}
+      \IF b.y > 0 \THEN \rcomment{it has all openings in the given direction}
+         \FOR x := 0 \TO b.width \DO 
+            \IF \NOT occupiedBlocks[b.x+x][b.y-1] \THEN 
+               valid := false
+               \EXIT
+            \FI
+         \OD
+      \FI
+      \rcomment{Repeat this process for right, left, and below}
+   \OD\ENDPROC
+\end{program}
 
 \subsection{Decide what to do next}
-To decide which of the generated moves to use, we will simply choose the first one in the list that hasn't yet been seen (this mechanism will be discussed in subsection \ref{ssec:checkDup}), and try it. 
+To decide which of the generated moves to use, we will simply choose the first one in the list that hasn't yet been seen (this mechanism will be discussed in subsection \ref{ssec:checkDup}), and try it. In future we may define a delta function to chose the move that is ``closest'' to the goal (this may increase efficiency).
 
 \subsection{Make and Unmake moves}
+Making and unmaking moves is fairly simple. There are two ways I can see to try doing it: 
+\begin{enumerate}
+\item Create a copy of the board to make the move, and then unmaking would be just using the unmodified version.  (not memory efficient)
+\item Create a ``move'' procedure that takes a start position and a goal position. With that, we can use move(from, to) to make the move and use move(to, from) to unmake it. 
+\end{enumerate}
 
 \subsection{Detect Previously Visited configurations}
+With the class storing the state of the board, add a hashing function to allow us to put it into a hashtable and later look it up. This is a place where some optimizations could be done, but to get the code working, we will just convert the board to a string and hash that string, using string's hashing function. 
 \label{ssec:checkDup}
 \sourcePackage{.}{main}
 \sourceClass{Solver.java}
