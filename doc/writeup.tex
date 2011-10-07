@@ -34,8 +34,11 @@
 \newcommand{\sourceRoot}{../src/}
 \newcommand{\myPackage}{}
 \newcommand{\myJPackage}{}
-\newcommand{\sourcePackage}[2]{\subsection*{Package: #2}\renewcommand{\myPackage}{#1}\renewcommand{\myJPackage}{#2}}
-\newcommand{\sourceClass}[1]{\lstinputlisting[caption=\myJPackage.#1]{\sourceRoot\myPackage/#1}}
+\newcommand{\sourcePackage}[2]{  \subsection*{Package: #2}
+                                 \renewcommand{\myPackage}{#1}
+                                 \renewcommand{\myJPackage}{#2}}
+\newcommand{\sourceClass}[1]{    \lstinputlisting[caption=\myJPackage.#1]
+                                 {\sourceRoot\myPackage/#1}}
 \begin{document}
 \title{The Solving of the Simple Single Player Game Involving Sliding Blocks}
 \author{Zachary M. Bush}
@@ -45,7 +48,11 @@
 \newpage
 \section{The Plan}
 \subsection{Checking For Goal Configuration}
-In this section we will simply discuss the plan for implementing the blocks project. The basis of this algorithm will be to look through the list of the goal orientation. For each goal position, look through the list of current block positions and check if there is a block that is of the correct size and in that position. 
+In this section we will simply discuss the plan for implementing the blocks 
+project. The basis of this algorithm will be to look through the list of the 
+goal orientation. For each goal position, look through the list of current 
+block positions and check if there is a block that is of the correct size and 
+in that position. 
 \begin{lstlisting}[caption=Checking for Goal Configuration]
 boolean isCorrect(Block [] currentBlocks, Block [] goalBlocks){
    for(int i = 0; i < goalBlocks.length; i++){
@@ -57,14 +64,21 @@ boolean isCorrect(Block [] currentBlocks, Block [] goalBlocks){
          }
       }
       if(!found){
-         return false; // If we haven't matched one of the goal blocks. Then the goal is not reached
+         return false; // If we haven't matched one of the goal blocks. 
+                       // Then the goal is not reached
       }
    }
    return true;
 }
 \end{lstlisting}
 \subsection{Generate Possible Moves}
-To generate possible moves, we will need to look at each block individually. For each block we need to look to the left and right for open spots, and compare the number of open spots to the height of the block. If it is greater than or equal to the height, then that is a possible move. (we will only consider moving blocks one position at a time, to simplify the generation process). The process then needs to be repeated for the above and below comparing against the width. 
+To generate possible moves, we will need to look at each block individually. 
+For each block we need to look to the left and right for open spots, and 
+compare the number of open spots to the height of the block. If it is greater 
+than or equal to the height, then that is a possible move. (we will only 
+consider moving blocks one position at a time, to simplify the generation 
+process). The process then needs to be repeated for the above and below 
+comparing against the width. 
 \begin{lstlisting}[caption=Generate Possible Moves]
 Move [] possibleMoves(Block [] currentBlocks){
    boolean occupiedBlocks[][] = new boolean[width][height];
@@ -119,17 +133,28 @@ Move [] possibleMoves(Block [] currentBlocks){
 \end{program}
 
 \subsection{Decide what to do next}
-To decide which of the generated moves to use, we will simply choose the first one in the list that hasn't yet been seen (this mechanism will be discussed in subsection \ref{ssec:checkDup}), and try it. In future we may define a delta function to chose the move that is ``closest'' to the goal (this may increase efficiency).
+To decide which of the generated moves to use, we will simply choose the first 
+one in the list that hasn't yet been seen (this mechanism will be discussed in 
+subsection \ref{ssec:checkDup}), and try it. In future we may define a delta 
+function to chose the move that is ``closest'' to the goal (this may increase 
+efficiency).
 
 \subsection{Make and Unmake moves}
-Making and unmaking moves is fairly simple. There are two ways I can see to try doing it: 
+Making and unmaking moves is fairly simple. There are two ways I can see to try 
+doing it: 
 \begin{enumerate}
-\item Create a copy of the board to make the move, and then unmaking would be just using the unmodified version.  (not memory efficient)
-\item Create a ``move'' procedure that takes a start position and a goal position. With that, we can use move(from, to) to make the move and use move(to, from) to unmake it. 
+\item Create a copy of the board to make the move, and then unmaking would be 
+      just using the unmodified version.  (not memory efficient)
+\item Create a ``move'' procedure that takes a start position and a goal 
+      position. With that, we can use move(from, to) to make the move and use 
+      move(to, from) to unmake it. 
 \end{enumerate}
 
 \subsection{Detect Previously Visited configurations}
-With the class storing the state of the board, add a hashing function to allow us to put it into a hashtable and later look it up. This is a place where some optimizations could be done, but to get the code working, we will just convert the board to a string and hash that string, using string's hashing function. 
+With the class storing the state of the board, add a hashing function to allow 
+us to put it into a hashtable and later look it up. This is a place where some 
+optimizations could be done, but to get the code working, we will just convert 
+the board to a string and hash that string, using string's hashing function. 
 \label{ssec:checkDup}
 \sourcePackage{.}{main}
 \sourceClass{Solver.java}
