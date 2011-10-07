@@ -12,21 +12,21 @@
 \lstset{
    backgroundcolor=\color{lbcolor},
    tabsize=3,
-   rulecolor=,
+   % rulecolor=,
    language=Java,
    basicstyle=\scriptsize,
-   upquote=true,
-   aboveskip={1.5\baselineskip},
+   % upquote=true,
+   % aboveskip={1.5\baselineskip},
    columns=fixed,
-   showstringspaces=false,
-   extendedchars=true,
+   % showstringspaces=false,
+   % extendedchars=true,
    breaklines=true,
    % prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
    % frame=single,
-   showtabs=false,
-   showspaces=false,
-   showstringspaces=false,
-   identifierstyle=\ttfamily,
+   % showtabs=false,
+   % showspaces=false,
+   % showstringspaces=false,
+   % identifierstyle=\ttfamily,
    keywordstyle=\color[rgb]{0,0,1},
    commentstyle=\color[rgb]{0.133,0.545,0.133},
    stringstyle=\color[rgb]{0.627,0.126,0.941},
@@ -42,22 +42,57 @@
 \maketitle
 \tableofcontents
 \lstlistoflistings
+\newpage
 \section{The Plan}
 \subsection{Checking For Goal Configuration}
 In this section we will simply discuss the plan for implementing the blocks project. The basis of this algorithm will be to look through the list of the goal orientation. For each goal position, look through the list of current block positions and check if there is a block that is of the correct size and in that position. 
-\begin{program}
-\PROC |isCorrect|(currentBlocks, goalBlocks) \BODY
-   \FOR i := 0 \TO |len|(goalBlocks) \DO
-      found := false \rcomment{Check if the current goal block is found.}
-      \FOR j := 0 \TO |len|(currentBlocks) \DO
-         \IF goalBlocks[i] = currentBlocks[j] \THEN found := true \FI
-      \OD
-      \IF \NOT found \THEN \EXIT(false) \FI \rcomment{A goal block doesn't match. Return False}
-   \OD
-\EXIT(true)\ENDPROC
-\end{program}
+\begin{lstlisting}[caption=Checking for Goal Configuration]
+boolean isCorrect(Block [] currentBlocks, Block [] goalBlocks){
+   for(int i = 0; i < goalBlocks.length; i++){
+      boolean found = false;
+      for(int j = 0; j < currentBlocks.length; j++){
+         if(goalBlocks[i].equals(currentBlocks[j])){
+            found = true;
+            break;
+         }
+      }
+      if(!found){
+         return false; // If we haven't matched one of the goal blocks. Then the goal is not reached
+      }
+   }
+   return true;
+}
+\end{lstlisting}
 \subsection{Generate Possible Moves}
 To generate possible moves, we will need to look at each block individually. For each block we need to look to the left and right for open spots, and compare the number of open spots to the height of the block. If it is greater than or equal to the height, then that is a possible move. (we will only consider moving blocks one position at a time, to simplify the generation process). The process then needs to be repeated for the above and below comparing against the width. 
+\begin{lstlisting}[caption=Generate Possible Moves]
+Move [] possibleMoves(Block [] currentBlocks){
+   boolean occupiedBlocks[][] = new boolean[width][height];
+   // Set initial values to false.
+   for(i = 0; i < currentBlocks.length; i++){
+      for(x = 0; x < curentBlocks[i].width; x++){
+         int xpos = currentBlocks[i].x;
+         int ypos = currentBlocks[i].y;
+         for(y = 0; y < currentBlocks[i].height; y++){
+            occupiedBlocks[x + xpos][y + ypos] = true;
+         }
+      }
+   }
+   for(i = 0; i < currentBlocks.length; i++){
+      Block b = currentBlock[i];
+      boolean valid = true;
+      if(b.y > 0){
+         for(int x = 0; x < b.width; x++){
+            if(!occupiedBlocks[b.x+x][b.y-1]){
+               valid = false;
+               break;
+            }
+         }
+      }
+   }
+   // Repeat the process for left, right, and below. 
+}
+\end{lstlisting}
 \begin{program}
 \PROC |possibleMoves|(currentBlocks) \BODY
    occupiedBlocks := array[width][height]
