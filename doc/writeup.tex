@@ -107,30 +107,6 @@ Move [] possibleMoves(Block [] currentBlocks){
    // Repeat the process for left, right, and below. 
 }
 \end{lstlisting}
-\begin{program}
-\PROC |possibleMoves|(currentBlocks) \BODY
-   occupiedBlocks := array[width][height]
-   \FOR i := 0 \TO |len|(currentBlocks) \DO
-      \FOR x := 0 \TO currentBlocks[i].width \DO
-         \FOR y := 0 \TO currentBlocks[i].height \DO
-            occupiedBlocks[x+currentBlocks[i].x][y+currentBlocks[i].y] := true
-         \OD
-      \OD
-   \OD
-   \FOR i := 0 \TO |len|(currentBlocks) \DO
-      b := currentBlocks[i]
-      valid := true \rcomment{We will only consider a move valid if}
-      \IF b.y > 0 \THEN \rcomment{it has all openings in the given direction}
-         \FOR x := 0 \TO b.width \DO 
-            \IF \NOT occupiedBlocks[b.x+x][b.y-1] \THEN 
-               valid := false
-               \EXIT
-            \FI
-         \OD
-      \FI
-      \rcomment{Repeat this process for right, left, and below}
-   \OD\ENDPROC
-\end{program}
 
 \subsection{Decide what to do next}
 To decide which of the generated moves to use, we will simply choose the first 
@@ -156,11 +132,9 @@ us to put it into a hashtable and later look it up. This is a place where some
 optimizations could be done, but to get the code working, we will just convert 
 the board to a string and hash that string, using string's hashing function. 
 \label{ssec:checkDup}
+
+
 \sourcePackage{.}{main}
-\sourceClass{Solver.java}
-\sourceClass{Solver.java}
-\sourceClass{Solver.java}
-\sourceClass{Solver.java}
 \sourceClass{Solver.java}
 
 \end{document}
