@@ -1,2 +1,7 @@
 syntax: glob
-*.class
+*.aux
+*.toc
+*.lol
+*.dvi
+*.pdf
+*.log
